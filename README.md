@@ -75,7 +75,7 @@ pbs = Pbs(modules, commands)
 ```
 ## API
 #### `Pbs.name(name)`
-Sets a user specified name for the job so you can track it easier `qstat`.
+Sets a user specified name for the job so you can track it easier.
 
 #### `Pbs.wall_time(hours, [minutes], [seconds])`
 #### `Pbs.cpu_time(hours, [minutes], [seconds])`

@@ -60,6 +60,18 @@ pbs.hybrid(n, m)
 pbs.add_pbs_command('-l nodes=5:ppn=12+nodes=1:ppn=1')
 ```
 
+## Job dependency
+Job dependency is done simply by calling `depends` method on `Pbs` object:
+
+```python
+job_1.submit()
+
+job_2.depends(job_1).submit()
+
+# Or if you want an afterany dependency
+job_2.depends(job_1, Pbs.DEPENDENCY_AFTER_ANY).submit()
+```
+
 ## Environment modules
 You can create an instance of `Modules` for managing the environment modules. Note that you should pass the command containers in the right order.
 
@@ -91,6 +103,9 @@ Requests for N processors which may be running on any nodes.
 
 #### `Pbs.hybrid(N, M)`
 Requests for N nodes with M processors.
+
+#### `Pbs.depends(pbs, [dependency_type])`
+Make a dependency to another job
 
 #### `Modules.purge()`
 Requests for purging all the loaded modules.

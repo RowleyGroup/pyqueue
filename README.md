@@ -55,7 +55,7 @@ pbs.mpi(m)
 pbs.hybrid(n, m)
 ```
 
-# Custom PBS commands
+## Custom PBS commands
 ```python
 pbs.add_pbs_command('-l nodes=5:ppn=12+nodes=1:ppn=1')
 ```
@@ -74,29 +74,29 @@ commands = ShellCommands()
 pbs = Pbs(modules, commands)
 ```
 ## API
-### `Pbs.name(name)`
+#### `Pbs.name(name)`
 Sets a user specified name for the job so you can track it easier `qstat`.
 
-### `Pbs.wall_time(hours, [minutes], [seconds])`
-### `Pbs.cpu_time(hours, [minutes], [seconds])`
+#### `Pbs.wall_time(hours, [minutes], [seconds])`
+#### `Pbs.cpu_time(hours, [minutes], [seconds])`
 
-### `Pbs.serial()`
+#### `Pbs.serial()`
 Requests for 1 processors on 1 node.
 
-### `Pbs.open_mp(M)`
+#### `Pbs.open_mp(M)`
 Requests for M processors on the same node.
 
-### `Pbs.mpi(N)`
+#### `Pbs.mpi(N)`
 Requests for N processors which may be running on any nodes.
 
-### `Pbs.hybrid(N, M)`
+#### `Pbs.hybrid(N, M)`
 Requests for N nodes with M processors.
 
-### `Modules.purge()`
+#### `Modules.purge()`
 Requests for purging all the loaded modules.
 
-### `Modules.load(name)`
+#### `Modules.load(name)`
 Loads an environment modules.
 
-### `Modules.unload(name)`
+#### `Modules.unload(name)`
 Unloads an environment modules.

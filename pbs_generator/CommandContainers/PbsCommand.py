@@ -54,6 +54,9 @@ class PbsCommands(CommandContainerInterface):
     def add_pbs_command(self, string):
         self.commands.append(string)
 
+    def depends(self, job):
+        self.dependency = job
+
     def __str__(self):
         lines = []
 

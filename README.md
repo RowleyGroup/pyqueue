@@ -1,6 +1,8 @@
 # PBS-Generator
 A python library for generating PBS scripts and submitting them to queue.
 
+PBS-Gnerator is created to make it easier to write PBS scripts, submitting them to queue and handling job dependencies.
+
 # Installation
 You can use pip to install the package:
 
@@ -9,9 +11,8 @@ pip install pbs-generator
 ```
 
 # Usage
-PBS-Gnerator is created to make it easier to write PBS scripts, submitting them to queue and handling job dependencies.
 
-To create a new PBS script with some shell commands, you should make an instances of `Pbs` and `ShellCommands`.
+To create a new PBS script with some shell commands, you should make an instance of `Pbs` and `ShellCommands`.
 
 ```python
 from pbs_generator import Pbs, ShellCommands

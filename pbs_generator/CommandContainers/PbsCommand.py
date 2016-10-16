@@ -54,6 +54,9 @@ class PbsCommands(CommandContainerInterface):
     def add_pbs_command(self, string):
         self.commands.append(string)
 
+    def add_attribute(self, key, value):
+        self.commands.append('#PBS -l %s=%s' % (key, value))
+
     def __str__(self):
         lines = []
 

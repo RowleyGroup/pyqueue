@@ -13,6 +13,10 @@ class ShellCommands(CommandContainerInterface):
 
         return function
 
+    def append(self, command):
+        self.commands.append(command)
+        return self
+
     def get_name(self):
         return self._name
 

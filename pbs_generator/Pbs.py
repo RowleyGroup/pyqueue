@@ -1,4 +1,5 @@
 import re
+import paramiko
 from subprocess import Popen, PIPE, STDOUT
 from CommandContainers.PbsCommand import PbsCommands
 
@@ -34,12 +35,10 @@ class Pbs:
         input = self.get_string()
 
         if isinstance(self.dependency, Pbs):
-            if self.dependency.submitted:
-                command = [program, '-W', 'depend=%s:%s' % (self.dependency_type, self.dependency.id)]
-            else:
-                raise Exception(
-                    'The job that you are trying to submit, is dependent on another job that is not submitted yet.'
-                )
+            if not self.dependency.submitted:
+                self.dependency.submit()
+
+            command = [program, '-W', 'depend=%s:%s' % (self.dependency_type, self.dependency.id)]
         else:
             command = program
 
@@ -63,3 +62,32 @@ class Pbs:
 
     def __str__(self):
         return self.get_string()
+
+
+class SshPbs(Pbs):
+    def __init__(self, *commands, **kwargs):
+        assert 'ssh' in kwargs
+        assert isinstance(kwargs.get('ssh'), paramiko.SSHClient)
+        Pbs.__init__(self, *commands)
+        self.ssh = kwargs.get('ssh')
+
+    def submit(self, program='qsub'):
+        input = self.get_string()
+
+        if isinstance(self.dependency, Pbs):
+            if not self.dependency.submitted:
+                self.dependency.submit()
+
+            command = '%s -W depend=%s:%s' % (program, self.dependency_type, self.dependency.id)
+        else:
+            command = program
+
+        stdin, stdout, stderr = self.ssh.exec_command(command)
+        stdin.write(input)
+        stdin.flush()
+        stdin.channel.shutdown_write()
+        output = stdout.read()
+
+        self.id = re.search('(\d+)', output).group(1)
+        self.submitted = True
+        return self

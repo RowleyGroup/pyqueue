@@ -8,7 +8,7 @@ class ShellCommands(CommandContainerInterface):
 
     def __getattr__(self, name):
         def function(*args):
-            self.commands.append('%s %s' % (name, ''.join(args)))
+            self.commands.append('%s %s' % (name, ' '.join(args)))
             return self
 
         return function

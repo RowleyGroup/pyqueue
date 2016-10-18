@@ -1,7 +1,7 @@
 import re
 import paramiko
 from subprocess import Popen, PIPE, STDOUT
-from CommandContainers.PbsCommand import PbsCommands
+from CommandContainers.PbsCommands import PbsCommands
 
 
 class Pbs:
@@ -13,6 +13,7 @@ class Pbs:
         self.commands = commands
         self.submitted = False
         self.dependency = None
+        self.id = None
 
     def get_string(self):
         parts = []
@@ -31,6 +32,13 @@ class Pbs:
         self.dependency_type = type
         return self
 
+    def run_command(self, command, pipe_in):
+        p = Popen(command, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        stdout = p.communicate(input=pipe_in)[0]
+        p.stdin.close()
+
+        return stdout
+
     def submit(self, program='qsub'):
         input = self.get_string()
 
@@ -42,9 +50,7 @@ class Pbs:
         else:
             command = program
 
-        p = Popen(command, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-        stdout = p.communicate(input=input)[0]
-        p.stdin.close()
+        stdout = self.run_command(command, input)
 
         self.id = re.search('(\d+)', stdout).group(1)
         self.submitted = True
@@ -60,6 +66,9 @@ class Pbs:
 
         return function
 
+    def get_name(self):
+        return self.pbs_commands._name
+
     def __str__(self):
         return self.get_string()
 
@@ -71,23 +80,9 @@ class SshPbs(Pbs):
         Pbs.__init__(self, *commands)
         self.ssh = kwargs.get('ssh')
 
-    def submit(self, program='qsub'):
-        input = self.get_string()
-
-        if isinstance(self.dependency, Pbs):
-            if not self.dependency.submitted:
-                self.dependency.submit()
-
-            command = '%s -W depend=%s:%s' % (program, self.dependency_type, self.dependency.id)
-        else:
-            command = program
-
+    def run_command(self, command, pipe_in):
         stdin, stdout, stderr = self.ssh.exec_command(command)
         stdin.write(input)
         stdin.flush()
         stdin.channel.shutdown_write()
-        output = stdout.read()
-
-        self.id = re.search('(\d+)', output).group(1)
-        self.submitted = True
-        return self
+        return stdout.read()

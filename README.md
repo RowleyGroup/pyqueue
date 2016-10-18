@@ -1,7 +1,7 @@
 # PBS-Generator
-A python library for generating PBS scripts and submitting them to queue.
+A python library for submitting calculations to a [Portable Batch System](https://en.wikipedia.org/wiki/Portable_Batch_System) (PBS) queuing system.
 
-PBS-Gnerator is created to make it easier to write PBS scripts, submitting them to queue and handling job dependencies.
+This library supports configuration of job attributes such as walltime, node requirements, and dependencies. If passwordless SSH is enabled, it can automatically submit calculations on remote systems.
 
 # Installation
 You can use pip to install the package:
@@ -93,13 +93,13 @@ Sets a user specified name for the job so you can track it easier.
 #### `Pbs.cpu_time(hours, [minutes], [seconds])`
 
 #### `Pbs.serial()`
-Requests for 1 processors on 1 node.
+Requests 1 processor on 1 node.
 
 #### `Pbs.open_mp(M)`
-Requests for M processors on the same node.
+Requests M processors on the same node. This should be used for jobs that use shared memory parallelization (e.g., OpenMP) or when communication across an interconnect severely impacts job performance.
 
 #### `Pbs.mpi(N)`
-Requests for N processors which may be running on any nodes.
+Requests for N processors which may be running on any nodes. This mode of parallelization is suitable for Message Passing Interface (MPI) jobs.
 
 #### `Pbs.hybrid(N, M)`
 Requests for N nodes with M processors.

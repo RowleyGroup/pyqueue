@@ -46,7 +46,7 @@ class Pbs:
             if not self.dependency.submitted:
                 self.dependency.submit()
 
-            command = [program, '-W', 'depend=%s:%s' % (self.dependency_type, self.dependency.id)]
+            command = '%s -W depend=%s:%s' % (program, self.dependency_type, self.dependency.id)
         else:
             command = program
 
@@ -82,7 +82,7 @@ class SshPbs(Pbs):
 
     def run_command(self, command, pipe_in):
         stdin, stdout, stderr = self.ssh.exec_command(command)
-        stdin.write(input)
+        stdin.write(pipe_in)
         stdin.flush()
         stdin.channel.shutdown_write()
         return stdout.read()

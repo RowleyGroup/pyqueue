@@ -1,3 +1,5 @@
+![PBS Generator](https://raw.githubusercontent.com/RowleyGroup/pbs-generator/master/logo.png)
+
 # PBS-Generator
 A python library for submitting calculations to a [Portable Batch System](https://en.wikipedia.org/wiki/Portable_Batch_System) (PBS) queuing system.
 
@@ -15,6 +17,8 @@ If you get errors while installation of cryptography, follow [these instructions
 # Usage
 
 ## CLI
+
+### `$ nicesub`
 
 Once you have the package installed, you will have access to a command-line program called `nicesub`. This program takes two arguments, `ssh_url` and `command`. You should run this command on your local machine and this script will upload the files and submit the jobs with the corresponding command for each file through an SSH connection. If your public key is authorized you won't need need to enter your password, otherwise you can use -p option that will prompt for password input.
 

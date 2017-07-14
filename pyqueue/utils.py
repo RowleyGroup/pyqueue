@@ -21,10 +21,11 @@ def strfdelta(tdelta, fmt):
     param fmt: The pattern to format the timedelta with
     returns: str
     """
-    substitutes = {"D": tdelta.days}
-    hours, rem = divmod(tdelta.seconds, 3600)
+    substitutes = dict()
+    hours, rem = divmod(tdelta.total_seconds(), 3600)
     minutes, seconds = divmod(rem, 60)
-    substitutes["H"] = '{:02d}'.format(hours)
-    substitutes["M"] = '{:02d}'.format(minutes)
-    substitutes["S"] = '{:02d}'.format(seconds)
+
+    substitutes["H"] = '{:02d}'.format(int(hours))
+    substitutes["M"] = '{:02d}'.format(int(minutes))
+    substitutes["S"] = '{:02d}'.format(int(seconds))
     return DeltaTemplate(fmt).substitute(**substitutes)

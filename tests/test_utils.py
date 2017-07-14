@@ -3,7 +3,8 @@ pyqueue tests.
 """
 
 import unittest
-from pyqueue.utils import Constants, orbital_speed, circumference, orbital_period
+from datetime import timedelta
+from pyqueue.utils import strfdelta
 
 
 class TestUtils(unittest.TestCase):
@@ -14,43 +15,18 @@ class TestUtils(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_orbital_speed(self):
+    def test_strfdelta(self):
         """
-        Calculate the orbital speed of an object.
+        Format the timedelta
         """
-        answer = orbital_speed(
-            Constants.Earth,
-            600000,
-            70
-        )
-        answer = round(answer, 3)
+        answer = strfdelta(timedelta(minutes=10, seconds=50), '%M:%S')
         self.assertEqual(
             answer,
-            2425.552
+            '10:50'
         )
 
-    def test_circumference(self):
-        """
-        2*pi*r
-        """
-        answer = circumference(600000)
-        answer = round(answer, 3)
+        answer = strfdelta(timedelta(days=1, hours=10), '%H:%M:%S')
         self.assertEqual(
             answer,
-            3769911.184
-        )
-
-    def test_orbital_period(self):
-        """
-        Calculate the orbital period of an object.
-        """
-        answer = orbital_period(
-            Constants.Earth,
-            600000,
-            70
-        )
-        answer = round(answer, 3)
-        self.assertEqual(
-            answer,
-            1554.43
+            '34:00:00'
         )

@@ -44,7 +44,8 @@ class Coverage(Command):
 setup(
     author='Mohamad Mohebifar',
     author_email='mmohebifar@mun.ca',
-    description='pyqueue',
+    description='A declarative python library for generating and submitting' +
+    'jobs to different queueing systems e.g. Slurm, Torque, etc.',
     download_url='',
     cmdclass={
         'coverage': Coverage,

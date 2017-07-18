@@ -51,6 +51,7 @@ setup(
         'coverage': Coverage,
     },
     install_requires=[
+        'paramiko'
     ],
     license='GNU GPL (3.0)',
     name='pyqueue',

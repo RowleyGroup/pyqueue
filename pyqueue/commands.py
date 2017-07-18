@@ -25,18 +25,28 @@ class Commands(object):
         self._commands.append(command)
         return self
 
+    def get_commands(self):
+        """
+        Returns a list of all commands in this command container
+
+        :rtype: list
+        """
+        return self._commands
+
     def __getattr__(self, name):
         """
         Magically enabling using a program name as a method
 
         >>> commands.cd('/foo/bar').program('arg1 arg2 --options')
+
+        :rtype: function
         """
         def function(*args):
             """
             Takes arguments and appends a command with a
             program name `name` from the upper scope
 
-            :returns Commands
+            :rtype: Commands
             """
             self.append('%s %s' % (name, ' '.join(args)))
             return self
